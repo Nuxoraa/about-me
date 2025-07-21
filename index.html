@@ -1,510 +1,788 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuxora | Web Developer</title>
+    <title>Nuxora | Full-Stack Developer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        
-        /* Основные стили */
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --accent: #fd79a8;
+            --black: #000000;
+            --dark-gray: #1a1a1a;
+            --gray: #4d4d4d;
+            --light-gray: #e6e6e6;
+            --white: #ffffff;
+            --accent: #333333;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-            background: var(--light);
-            color: var(--dark);
+            background: var(--white);
+            color: var(--black);
             overflow-x: hidden;
+            line-height: 1.7;
         }
 
         /* Шапка */
         header {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: var(--white);
+            border-bottom: 1px solid var(--light-gray);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        header.scrolled {
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 5%;
+            padding: 1.8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .logo {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-weight: 800;
+            color: var(--black);
             text-decoration: none;
+            letter-spacing: -1px;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 30px;
+            height: 3px;
+            background: var(--black);
+            transition: width 0.4s;
+        }
+
+        .logo:hover::after {
+            width: 100%;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 3rem;
         }
 
         .nav-links a {
-            color: var(--dark);
+            color: var(--dark-gray);
             text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
+            font-weight: 500;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.5rem 0;
         }
 
-        .nav-links a:hover {
-            color: var(--primary);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--black);
+            transition: width 0.4s;
         }
 
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            font-size: 1.5rem;
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
-        /* Главный экран */
+        /* Герой */
         #hero {
             height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .hero-content h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: fadeInDown 1s ease;
+            font-size: 4.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -2px;
         }
 
         .hero-content p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease 0.3s both;
+            font-size: 1.4rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            font-weight: 300;
         }
 
         .btn {
-            display: inline-block;
-            padding: 0.8rem 2rem;
-            background: white;
-            color: var(--primary);
-            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem 2.5rem;
+            background: var(--black);
+            color: var(--white);
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            animation: fadeIn 1s ease 0.6s both;
+            font-weight: 500;
+            transition: all 0.4s;
+            border-radius: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            transition: all 0.4s;
+            z-index: -1;
         }
 
         .btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            color: var(--black);
+        }
+
+        .btn:hover::before {
+            left: 0;
+        }
+
+        .btn i {
+            transition: transform 0.3s;
+        }
+
+        .btn:hover i {
+            transform: translateX(5px);
         }
 
         /* Секции */
         section {
-            padding: 6rem 5%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 8rem 5%;
+            position: relative;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .section-title {
             font-size: 3rem;
-            margin-bottom: 3rem;
-            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 5rem;
+            position: relative;
+            display: inline-block;
+            letter-spacing: -1px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--black);
         }
 
         /* Обо мне */
         #about {
-            background: white;
+            background: var(--white);
+            border-top: 1px solid var(--light-gray);
         }
 
         .about-content {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
             align-items: center;
-            gap: 3rem;
         }
 
-        .about-img {
-            flex: 1;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        .avatar-container {
+            position: relative;
+            max-width: 500px;
         }
 
-        .about-img img {
+        .avatar-img {
             width: 100%;
             height: auto;
             display: block;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            box-shadow: 30px 30px 0 var(--light-gray);
+            transition: all 0.4s;
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--light-gray);
         }
 
-        .about-text {
-            flex: 1;
+        .avatar-img:hover {
+            box-shadow: 15px 15px 0 var(--light-gray);
+            transform: translate(5px, 5px);
+        }
+
+        .avatar-decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border: 2px dashed var(--light-gray);
+            top: -50px;
+            left: -50px;
+            z-index: 1;
+            animation: rotate 30s linear infinite;
         }
 
         .about-text h3 {
             font-size: 2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .info-block {
+            background: var(--light-gray);
+            padding: 2rem;
+            margin: 2rem 0;
+            border-left: 4px solid var(--black);
+        }
+
+        .info-block p {
+            margin: 0;
+            font-style: italic;
+            color: var(--dark-gray);
+        }
+
+        .contact-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0.8rem;
+            border: 1px solid var(--light-gray);
+            text-decoration: none;
+            color: var(--black);
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            background: var(--light-gray);
+            transform: translateX(5px);
+        }
+
+        .contact-link i {
+            font-size: 1.2rem;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--black);
+            color: var(--white);
+            border-radius: 50%;
         }
 
         /* Навыки */
         #skills {
-            background: var(--light);
+            background: var(--white);
         }
 
-        .skills-container {
+        .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 2rem;
         }
 
         .skill-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s;
-            text-align: center;
+            padding: 2.5rem;
+            border: 1px solid var(--light-gray);
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 0;
+            background: var(--black);
+            transition: height 0.4s;
+        }
+
+        .skill-card:hover::before {
+            height: 100%;
         }
 
         .skill-card:hover {
             transform: translateY(-10px);
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.05);
         }
 
         .skill-icon {
-            font-size: 4rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--black);
+        }
+
+        .skill-card h3 {
+            font-size: 1.5rem;
             margin-bottom: 1rem;
         }
 
-        .html { color: #e34c26; }
-        .python { color: #3776ab; }
-        .js { color: #f0db4f; }
+        .skill-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* GitHub */
+        #github {
+            background: var(--light-gray);
+        }
+
+        .github-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--light-gray);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 3rem;
+            color: var(--black);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid var(--black);
+        }
+
+        .github-link:hover {
+            gap: 15px;
+            background: var(--black);
+            color: var(--white);
+        }
 
         /* Контакты */
         #contact {
-            background: linear-gradient(135deg, var(--dark), #1e272e);
-            color: white;
+            background: var(--black);
+            color: var(--white);
         }
 
         .contact-container {
-            display: flex;
-            gap: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
         }
 
-        .contact-info {
-            flex: 1;
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .contact-form {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact-item {
+        .contact-method {
             display: flex;
             align-items: center;
+            gap: 1rem;
             margin-bottom: 1.5rem;
+            cursor: pointer;
         }
 
         .contact-icon {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-            color: var(--accent);
+            font-size: 1.3rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        .contact-method:hover .contact-icon {
+            background: var(--white);
+            color: var(--black);
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
+        .contact-form input,
+        .contact-form textarea {
             width: 100%;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background: transparent;
+            border: 1px solid var(--gray);
+            color: var(--white);
+            font-size: 1rem;
         }
 
-        .form-group textarea {
-            resize: vertical;
+        .contact-form textarea {
             min-height: 150px;
         }
 
         .submit-btn {
-            background: var(--accent);
-            color: white;
+            background: var(--white);
+            color: var(--black);
             border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-weight: 500;
             cursor: pointer;
-            font-weight: 600;
             transition: all 0.3s;
-            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(253, 121, 168, 0.4);
-        }
-
-        /* Регистрация */
-        #register {
-            background: white;
-        }
-
-        .register-form {
-            max-width: 600px;
-            margin: 0 auto;
-            background: var(--light);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background: var(--light-gray);
         }
 
         /* Футер */
         footer {
-            background: var(--dark);
-            color: white;
+            background: var(--dark-gray);
+            color: var(--white);
+            padding: 4rem 5%;
             text-align: center;
-            padding: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .social-links a {
-            color: white;
+            color: var(--white);
             font-size: 1.5rem;
-            transition: color 0.3s;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            text-decoration: none;
         }
 
         .social-links a:hover {
-            color: var(--accent);
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            color: var(--light-gray);
         }
 
         /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Адаптивность */
+        @media (max-width: 992px) {
+            .about-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-content h1 {
+                font-size: 3.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                gap: 1.5rem;
             }
-
-            .menu-toggle {
-                display: block;
-            }
-
+            
             .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
                 font-size: 2.5rem;
-            }
-
-            .about-content {
-                flex-direction: column;
-            }
-
-            .contact-container {
-                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
     <!-- Шапка -->
-    <header>
+    <header id="header">
         <nav>
-            <a href="#" class="logo">Nuxora</a>
+            <a href="#" class="logo">NUXORA</a>
             <div class="nav-links">
-                <a href="#hero">Главная</a>
-                <a href="#about">Обо мне</a>
-                <a href="#skills">Навыки</a>
-                <a href="#contact">Контакты</a>
-                
-            </div>
-            <div class="menu-toggle">
-                <i class="fas fa-bars"></i>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#github">GitHub</a>
+                <a href="#contact">Contact</a>
             </div>
         </nav>
     </header>
 
     <!-- Главный экран -->
     <section id="hero">
-        <div class="hero-content">
-            <h1>Привет, я Nuxora</h1>
-            <p>Web Developer | Python | JavaScript | HTML</p>
-            <a href="#about" class="btn">Узнать больше</a>
+        <div class="hero-content" data-aos="fade-up">
+            <h1>Full-Stack Developer & Problem Solver</h1>
+            <p>Building efficient web solutions with Python and JavaScript</p>
+            <a href="#about" class="btn" data-aos="fade-up" data-aos-delay="200">
+                Explore My Work <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
     </section>
 
     <!-- Обо мне -->
     <section id="about">
-        <h2 class="section-title">Обо мне</h2>
-        <div class="about-content">
-            <div class="about-img">
-    <img src="https://i.pinimg.com/736x/da/16/11/da1611e0e69d8a9c22b4431ae8bfc8ec.jpg" alt="Nuxora" style="width: 500px; border-radius: 10px;">
-</div>
-            <div class="about-text">
-                <h3>Кто я?</h3>
-                <p>Разработчик, который любит создавать крутые вещи. Пишу код на Python и JavaScript, верстаю сайты.</p>
-                <p><strong>Почта:</strong> nuxoraa@gmail.com</p>
-                <p><strong>Телефон:</strong> +7 706 428 03 12</p>
-                <p><strong>Telegram:</strong> @xorraa</p>
-                <p><strong>Instagram:</strong> @xorra.zxc</p>
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-right">About Me</h2>
+            <div class="about-content">
+                <div class="avatar-container" data-aos="fade-right" data-aos-delay="200">
+                    <div class="avatar-decoration"></div>
+                    <img src="https://i.pinimg.com/736x/7d/ae/59/7dae592fca47113e695f2a18c873f89d.jpg" alt="Nuxora" class="avatar-img">
+                </div>
+                <div class="about-text" data-aos="fade-left" data-aos-delay="400">
+                    <h3>Crafting Digital Experiences</h3>
+                    <p>With 3+ years in web development, I specialize in building responsive, user-friendly applications using modern technologies. My approach combines clean code architecture with attention to visual detail.</p>
+                    
+                    <div class="info-block">
+                        <p>"Passionate about creating elegant solutions to complex problems through code and design."</p>
+                    </div>
+
+                    <p>When not coding, I contribute to open-source projects and explore new frameworks to expand my technical expertise.</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://t.me/open_seaa" class="contact-link" target="_blank">
+                            <i class="fab fa-telegram"></i>
+                            <span>@open_seaa</span>
+                        </a>
+                        <a href="https://wa.me/19025057084" class="contact-link" target="_blank">
+                            <i class="fab fa-whatsapp"></i>
+                            <span>WhatsApp</span>
+                        </a>
+                        <a href="https://discordapp.com/users/nuxora.zxc" class="contact-link" target="_blank">
+                            <i class="fab fa-discord"></i>
+                            <span>nuxora.zxc</span>
+                        </a>
+                        <a href="https://github.com/Nuxoraa" class="contact-link" target="_blank">
+                            <i class="fab fa-github"></i>
+                            <span>Nuxoraa</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Навыки -->
     <section id="skills">
-        <h2 class="section-title">Мои навыки</h2>
-        <div class="skills-container">
-            <div class="skill-card">
-                <div class="skill-icon">
-                    <i class="fab fa-html5 html"></i>
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-right">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="skill-icon">
+                        <i class="fab fa-html5"></i>
+                    </div>
+                    <h3>Frontend Development</h3>
+                    <p>HTML5, CSS3, JavaScript (ES6+), React, Vue.js, Responsive Design, Web Accessibility, Performance Optimization</p>
                 </div>
-                <h3>HTML/CSS</h3>
-                <p>Создаю структуру и стиль для сайтов.</p>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">
-                    <i class="fab fa-python python"></i>
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="skill-icon">
+                        <i class="fab fa-python"></i>
+                    </div>
+                    <h3>Backend Development</h3>
+                    <p>Python, Django, Flask, RESTful APIs, GraphQL, Database Design (PostgreSQL, MongoDB), Authentication Systems</p>
                 </div>
-                <h3>Python</h3>
-                <p>Пишу скрипты, ботов и backend.</p>
-            </div>
-            <div class="skill-card">
-                <div class="skill-icon">
-                    <i class="fab fa-js js"></i>
+                <div class="skill-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="skill-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <h3>DevOps & Tools</h3>
+                    <p>Docker, CI/CD Pipelines, AWS, Git, Linux, Testing (PyTest, Jest), Webpack, Agile Methodologies</p>
                 </div>
-                <h3>JavaScript</h3>
-                <p>Делаю сайты интерактивными.</p>
             </div>
+        </div>
+    </section>
+
+    <!-- GitHub -->
+    <section id="github">
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-right">GitHub Activity</h2>
+            <p data-aos="fade-right" data-aos-delay="100">My open-source contributions and personal projects</p>
+            
+            <div class="github-stats">
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Repositories</div>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Active Project</div>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Code Quality</div>
+                </div>
+                <div class="stat-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Development</div>
+                </div>
+            </div>
+            
+            <a href="https://github.com/Nuxoraa" class="github-link" data-aos="fade-up" data-aos-delay="600" target="_blank">
+                View My GitHub Profile <i class="fas fa-external-link-alt"></i>
+            </a>
         </div>
     </section>
 
     <!-- Контакты -->
     <section id="contact">
-        <h2 class="section-title">Контакты</h2>
-        <div class="contact-container">
-            <div class="contact-info">
-                <h3>Мои контакты</h3>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
+        <div class="section-container">
+            <h2 class="section-title" data-aos="fade-right">Get In Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info" data-aos="fade-right" data-aos-delay="200">
+                    <h3>Contact Information</h3>
+                    <div class="contact-method" onclick="window.open('https://t.me/open_seaa', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <p>@open_seaa</p>
                     </div>
-                    <p>nuxoraa@gmail.com</p>
+                    <div class="contact-method" onclick="window.open('https://wa.me/19025057084', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <p>+1 (902) 505-7084</p>
+                    </div>
+                    <div class="contact-method" onclick="window.open('https://discordapp.com/users/nuxora.zxc', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <p>nuxora.zxc</p>
+                    </div>
+                    <div class="contact-method" onclick="window.open('mailto:nuxoraa@gmail.com', '_blank')">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <p>nuxoraa@gmail.com</p>
+                    </div>
                 </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <p>+7 706 428 03 12</p>
+                <div class="contact-form" data-aos="fade-left" data-aos-delay="400">
+                    <form>
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Project Details" required></textarea>
+                        <button type="submit" class="submit-btn">
+                            Send Message <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
                 </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fab fa-telegram"></i>
-                    </div>
-                    <p>@xorraa</p>
-                </div>
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <p>@xorra.zxc</p>
-                </div>
-            </div>
-            <div class="contact-form">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Ваше имя</label>
-                        <input type="text" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Сообщение</label>
-                        <textarea id="message" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Отправить</button>
-                </form>
             </div>
         </div>
     </section>
 
-  
-
     <!-- Футер -->
     <footer>
-        <div class="social-links">
-            <a href="https://t.me/xorraa"><i class="fab fa-telegram"></i></a>
-            <a href="https://instagram.com/xorra.zxc"><i class="fab fa-instagram"></i></a>
-            <a href="mailto:nuxoraa@gmail.com"><i class="fas fa-envelope"></i></a>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="https://t.me/open_seaa" target="_blank"><i class="fab fa-telegram"></i></a>
+                <a href="https://github.com/Nuxoraa" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://discordapp.com/users/nuxora.zxc" target="_blank"><i class="fab fa-discord"></i></a>
+                <a href="mailto:nuxoraa@gmail.com"><i class="fas fa-envelope"></i></a>
+            </div>
+            <p class="copyright">© 2025 Nuxora. All rights reserved.</p>
         </div>
-        <p>&copy; 2025 Nuxora. Все права защищены.</p>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Мобильное меню
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
+        // Инициализация анимаций
+        AOS.init({
+            duration: 800,
+            once: true,
+            easing: 'ease-in-out'
+        });
+
+        // Прокрутка шапки
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
         // Плавная прокрутка
@@ -515,6 +793,11 @@
                     behavior: 'smooth'
                 });
             });
+        });
+
+        // Открытие соцсетей при клике
+        document.querySelectorAll('.contact-method').forEach(method => {
+            method.style.cursor = 'pointer';
         });
     </script>
 </body>
